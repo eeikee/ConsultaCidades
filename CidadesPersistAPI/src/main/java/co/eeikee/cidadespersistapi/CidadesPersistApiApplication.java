@@ -1,4 +1,4 @@
-package com.eeikee.cidadespersistapi;
+package co.eeikee.cidadespersistapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

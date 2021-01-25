@@ -1,4 +1,4 @@
-package co.eeikee.cidadescontrollapi.resource;
+package co.eeikee.cidadespersistapi.resource;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.eeikee.cidadescontrollapi.domain.Cidade;
-import co.eeikee.cidadescontrollapi.service.CidadeService;
+import co.eeikee.cidadespersistapi.domain.Cidade;
+import co.eeikee.cidadespersistapi.service.CidadeService;
 
 @RestController
 @RequestMapping("/cidades")
@@ -30,7 +30,7 @@ public class CidadeResource {
 	
 	@PostMapping
 	public ResponseEntity<Cidade> salvar(@RequestBody Cidade cidade){
-		return ResponseEntity.ok(cs.salvar(cidade));
+		return ResponseEntity.status(HttpStatus.CREATED).body(cs.salvar(cidade));
 	}
 	
 	@GetMapping("/{id}")
