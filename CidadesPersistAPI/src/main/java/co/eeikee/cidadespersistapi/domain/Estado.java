@@ -1,47 +1,41 @@
 package co.eeikee.cidadespersistapi.domain;
 
 public enum Estado {
-	ACRE("Acre","AC"),
-	ALAGOAS("Alagoas","AL"),
-	AMAPA("Amapá","AP"),
-	AMAZONAS("Amazonas","AM"),
-	BAHIA("Bahia","BA"),
-	CEARA("Ceará","CE"),
-	ESPIRITO_SANTO("Espírito Santo","ES"),
-	GOIAS("Goiás","GO"),
-	MARANHAO("Maranhão","MA"),
-	MATO_GROSSO("Mato Grosso","MT"),
-	MATO_GROSSO_DO_SUL("Mato Grosso do Sul", "MS"),
-	MINAS_GERAIS("Minas Gerais","MG"),
-	PARA("Pará","PA"),
-	PARAIBA("Paraíba","PB"),
-	PARANA("Paraná","PR"),
-	PERNAMBUCO("Pernambuco","PE"),
-	PIAUI("Piauí","PI"),
-	RIO_DE_JANEIRO("Rio de Janeiro","RJ"),
-	RIO_GRANDE_DO_NORTE("Rio Grande do Norte", "RN"),
-	RIO_GRANDE_DO_SUL("Rio Grande do Sul", "RS"),
-	RONDONIA("Rondônia", "RO"),
-	RORAIMA("Roraima", "RR"),
-	SANTA_CATARINA("Santa Catarina", "SC"),
-	SAO_PAULO("São Paulo","SP"),
-	SERGIPE("Sergipe","SE"),
-	TOCANTINS("Tocantins","TO"),
-	DISTRITO_FEDERAL("Distrito Federal","DF");
+	AC("Acre"),
+	AL("Alagoas"),
+	AP("Amapá"),
+	AM("Amazonas"),
+	BA("Bahia"),
+	CE("Ceará"),
+	ES("Espírito Santo"),
+	GO("Goiás"),
+	MA("Maranhão"),
+	MT("Mato Grosso"),
+	MS("Mato Grosso do Sul"),
+	MG("Minas Gerais"),
+	PA("Pará"),
+	PB("Paraíba"),
+	PR("Paraná"),
+	PE("Pernambuco"),
+	PI("Piauí"),
+	RJ("Rio de Janeiro"),
+	RN("Rio Grande do Norte"),
+	RS("Rio Grande do Sul"),
+	RO("Rondônia"),
+	RR("Roraima"),
+	SC("Santa Catarina"),
+	SP("São Paulo"),
+	SE("Sergipe"),
+	TO("Tocantins"),
+	DF("Distrito Federal");
 	
 	private String nome;
-	private String sigla;
 	
-	private Estado(String nome, String sigla) {
+	private Estado(String nome) {
 		this.nome = nome;
-		this.sigla = sigla;
 	}
 
 	public String getNome() {
 		return nome;
-	}
-
-	public String getSigla() {
-		return sigla;
 	}
 }
