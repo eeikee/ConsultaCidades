@@ -3,7 +3,6 @@ package co.eeikee.cidadespersistapi.resource;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.eeikee.cidadespersistapi.domain.Cidade;
 import co.eeikee.cidadespersistapi.service.CidadeService;
+import co.eeikee.cidadespersistapi.service.LocationURI;
 
 @RestController
 @RequestMapping("/cidades")
@@ -24,12 +24,15 @@ public class CidadeResource {
 	
 	@GetMapping
 	public ResponseEntity<List<Cidade>> listar(){
-		return ResponseEntity.ok(cs.listar());
+		return !cs.listar().isEmpty() ? ResponseEntity.ok(cs.listar()) : ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
 	public ResponseEntity<Cidade> salvar(@RequestBody Cidade cidade){
-		return ResponseEntity.status(HttpStatus.CREATED).body(cs.salvar(cidade));
+		Cidade cidadeSalva = cs.salvar(cidade);
+		return ResponseEntity.created(
+				LocationURI.build(cidadeSalva.getId()))
+				.body(cidadeSalva);
 	}
 	
 	@GetMapping("/{id}")

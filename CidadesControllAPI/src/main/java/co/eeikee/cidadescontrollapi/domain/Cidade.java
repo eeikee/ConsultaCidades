@@ -5,8 +5,8 @@ public class Cidade {
 	private Long id;
 	
 	private String nome;
-	
-	private Estado sigla;
+
+	private Estado estado;
 
 	public Long getId() {
 		return id;
@@ -24,11 +24,11 @@ public class Cidade {
 		this.nome = nome;
 	}
 
-	public Estado getSigla() {
-		return sigla;
+	public Estado getEstado() {
+		return estado;
 	}
 
-	public void setSigla(Estado sigla) {
-		this.sigla = sigla;
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 }

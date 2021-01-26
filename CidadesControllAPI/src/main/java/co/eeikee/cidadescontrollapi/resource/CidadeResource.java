@@ -28,11 +28,11 @@ public class CidadeResource {
 	
 	@PostMapping
 	public ResponseEntity<Cidade> salvar(@RequestBody Cidade cidade){
-		return ResponseEntity.ok(cs.salvar(cidade));
+		return cs.salvar(cidade);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Cidade> buscarPorID(@PathVariable("id") Long id){
-		return ResponseEntity.ok(cs.buscarPorId(id));
+	public ResponseEntity<Object> buscarPorID(@PathVariable("id") Long id){
+		return cs.buscarPorId(id);
 	}
 }
