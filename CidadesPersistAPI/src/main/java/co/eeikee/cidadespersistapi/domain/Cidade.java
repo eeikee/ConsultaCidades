@@ -6,28 +6,23 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @JsonIgnoreProperties("hibernateLazyInitializer")
-public class Cidade implements AutoCloseable{
-	
+public class Cidade implements AutoCloseable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotNull
+
+	@NotEmpty(message = "O campo nome não pode estar vazio.")
 	private String nome;
-	
-	@NotNull(message = "O campo estado não pode estar vazio.")
+
+	@NotNull(message = "O campo estado não pode ser nulo.")
 	@Enumerated(EnumType.STRING)
 	private Estado estado;
 
@@ -56,7 +51,7 @@ public class Cidade implements AutoCloseable{
 	}
 
 	@Override
-	public void close() throws Exception {}
-	
-	
+	public void close() throws Exception {
+	}
+
 }

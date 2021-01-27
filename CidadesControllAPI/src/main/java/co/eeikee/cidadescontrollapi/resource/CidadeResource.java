@@ -20,19 +20,19 @@ public class CidadeResource {
 
 	@Autowired
 	private CidadeService cs;
-	
+
 	@GetMapping
-	public ResponseEntity<List<Cidade>> listar(){
-		return ResponseEntity.ok(cs.listar());
+	public ResponseEntity<List<Object>> listar() {
+		return cs.listar();
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<Cidade> salvar(@RequestBody Cidade cidade){
+	public ResponseEntity<Object> salvar(@RequestBody Cidade cidade) {
 		return cs.salvar(cidade);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> buscarPorID(@PathVariable("id") Long id){
+	public ResponseEntity<Object> buscarPorID(@PathVariable("id") Long id) {
 		return cs.buscarPorId(id);
 	}
 }

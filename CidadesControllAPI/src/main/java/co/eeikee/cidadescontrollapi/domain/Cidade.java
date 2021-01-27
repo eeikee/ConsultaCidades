@@ -1,9 +1,9 @@
 package co.eeikee.cidadescontrollapi.domain;
 
 public class Cidade {
-	
+
 	private Long id;
-	
+
 	private String nome;
 
 	private Estado estado;

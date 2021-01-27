@@ -1,6 +1,7 @@
 package co.eeikee.cidadespersistapi.exception.detail;
 
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import org.springframework.http.HttpStatus;
 
@@ -11,6 +12,10 @@ public class ErrorDetails {
 
 	private String titulo;
 	private HttpStatus status;
+	
+	@JsonInclude(Include.NON_NULL)
+	private Stream<Object> erroPorCampo;
+	
 	private LocalDateTime momento;
 	
 	@JsonInclude(Include.NON_NULL)
@@ -59,5 +64,21 @@ public class ErrorDetails {
 		this.status = status;
 		this.momento = momento;
 		this.mensagemDev = mensagemDev;
+	}
+	
+	public ErrorDetails(String titulo, HttpStatus status, Stream<Object> erroPorCampo,LocalDateTime momento, String mensagemDev) {
+		this.titulo = titulo;
+		this.status = status;
+		this.erroPorCampo = erroPorCampo;
+		this.momento = momento;
+		this.mensagemDev = mensagemDev;
+	}
+
+	public Stream<Object> getErroPorCampo() {
+		return erroPorCampo;
+	}
+
+	public void setErroPorCampo(Stream<Object> erroPorCampo) {
+		this.erroPorCampo = erroPorCampo;
 	}
 }
