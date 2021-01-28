@@ -2,6 +2,7 @@ package co.eeikee.cidadespersistapi.service;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,4 +35,16 @@ public class CidadeService {
 			throw new CidadeNaoEncontradaException();
 		}
 	}
+
+	public Cidade atualizarPorId(Long id, Cidade cidade) {
+		Cidade cidadeASerAtualizada = verificarExistencia(id);
+		BeanUtils.copyProperties(cidade, cidadeASerAtualizada, "id");
+		return cidadeASerAtualizada;
+	}
+
+	public void deletarPorId(Long id) {
+		verificarExistencia(id);
+		cr.deleteById(id);
+	}
+
 }

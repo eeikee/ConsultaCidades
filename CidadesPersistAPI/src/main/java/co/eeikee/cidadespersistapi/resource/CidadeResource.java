@@ -6,11 +6,14 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.eeikee.cidadespersistapi.domain.Cidade;
@@ -39,5 +42,16 @@ public class CidadeResource {
 	@GetMapping("/{id}")
 	public ResponseEntity<Cidade> buscarPorID(@PathVariable("id") Long id){
 		return ResponseEntity.ok(cs.buscarPorId(id));
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Cidade> atualizarPorID(@PathVariable("id") Long id, @RequestBody @Valid Cidade cidade){
+		return ResponseEntity.ok(cs.atualizarPorId(id, cidade));
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deletarPorID(@PathVariable("id") Long id){
+		cs.deletarPorId(id);
+		return ResponseEntity.noContent().build();
 	}
 }

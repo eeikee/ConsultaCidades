@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -17,15 +18,18 @@ import co.eeikee.cidadescontrollapi.domain.Cidade;
 
 @Service
 public class CidadeService {
-
-	private final String ROOT_URI = "http://localhost:8081/cidades";
+	
+	@Value("${url.api.persistencia}")
+	private String urlApiPersistencia;
+	
+	private String ENDPOINT_CIDADES = urlApiPersistencia.concat("/cidades");
 
 	@Autowired
 	private RestTemplate rt;
 
 	public ResponseEntity<List<Object>> listar() {
 		try {
-			return rt.exchange(ROOT_URI, HttpMethod.GET, null, new ParameterizedTypeReference<List<Object>>() {
+			return rt.exchange(ENDPOINT_CIDADES, HttpMethod.GET, null, new ParameterizedTypeReference<List<Object>>() {
 			});
 		} catch (HttpStatusCodeException e) {
 			return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
@@ -35,7 +39,7 @@ public class CidadeService {
 
 	public ResponseEntity<Object> salvar(Cidade cidade) {
 		try {
-			return rt.postForEntity(ROOT_URI, cidade, Object.class);
+			return rt.postForEntity(ENDPOINT_CIDADES, cidade, Object.class);
 		} catch (HttpStatusCodeException e) {
 			return ResponseEntity.status(e.getRawStatusCode()).headers(header -> header.setContentType(MediaType.APPLICATION_JSON)).body(e.getResponseBodyAsString(Charset.defaultCharset()));
 		}
@@ -43,7 +47,7 @@ public class CidadeService {
 
 	public ResponseEntity<Object> buscarPorId(Long id) {
 		try {
-			return rt.getForEntity(ROOT_URI.concat("/").concat(id.toString()), Object.class);
+			return rt.getForEntity(ENDPOINT_CIDADES.concat("/").concat(id.toString()), Object.class);
 		} catch (HttpStatusCodeException e) {
 			return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
 					.body(e.getResponseBodyAsString());

@@ -22,6 +22,7 @@ public class Cidade implements AutoCloseable {
 	@NotEmpty(message = "O campo nome não pode estar vazio.")
 	private String nome;
 
+	
 	@NotNull(message = "O campo estado não pode ser nulo.")
 	@Enumerated(EnumType.STRING)
 	private Estado estado;
