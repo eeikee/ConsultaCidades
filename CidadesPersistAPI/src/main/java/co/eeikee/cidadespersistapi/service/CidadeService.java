@@ -1,12 +1,16 @@
 package co.eeikee.cidadespersistapi.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.eeikee.cidadespersistapi.domain.Cidade;
+import co.eeikee.cidadespersistapi.domain.Estado;
 import co.eeikee.cidadespersistapi.exception.CidadeResourceExceptions.CidadeNaoEncontradaException;
 import co.eeikee.cidadespersistapi.repository.CidadeRepository;
 
@@ -47,4 +51,23 @@ public class CidadeService {
 		cr.deleteById(id);
 	}
 
+	public List<Cidade> buscarPorNomeCidade(String nome) {
+		return cr.findByNomeContaining(nome);
+	}
+
+	public List<Cidade> buscarPorSiglaEstado(String nome) {
+		List<Cidade> cidades = new ArrayList<Cidade>();
+		Arrays.asList(Estado.values()).stream()
+					.filter(estado -> estado.toString().contains(nome))
+					.forEach(estado -> cidades.addAll(cr.findByEstado(estado)));
+		return cidades;
+	}
+	
+	public List<Cidade> buscarPorNomeEstado(String nome) {
+		List<Cidade> cidades = new ArrayList<Cidade>();
+		Arrays.asList(Estado.values()).stream()
+					.filter(estado -> estado.getNome().contains(nome))
+					.forEach(estado -> cidades.addAll(cr.findByEstado(estado)));
+		return cidades;
+	}
 }

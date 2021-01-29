@@ -22,14 +22,14 @@ public class CidadeService {
 	@Value("${url.api.persistencia}")
 	private String urlApiPersistencia;
 	
-	private String ENDPOINT_CIDADES = urlApiPersistencia.concat("/cidades");
+	private String endpointCidades = urlApiPersistencia + "/cidades";
 
 	@Autowired
 	private RestTemplate rt;
 
 	public ResponseEntity<List<Object>> listar() {
 		try {
-			return rt.exchange(ENDPOINT_CIDADES, HttpMethod.GET, null, new ParameterizedTypeReference<List<Object>>() {
+			return rt.exchange(endpointCidades, HttpMethod.GET, null, new ParameterizedTypeReference<List<Object>>() {
 			});
 		} catch (HttpStatusCodeException e) {
 			return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
@@ -39,7 +39,7 @@ public class CidadeService {
 
 	public ResponseEntity<Object> salvar(Cidade cidade) {
 		try {
-			return rt.postForEntity(ENDPOINT_CIDADES, cidade, Object.class);
+			return rt.postForEntity(endpointCidades, cidade, Object.class);
 		} catch (HttpStatusCodeException e) {
 			return ResponseEntity.status(e.getRawStatusCode()).headers(header -> header.setContentType(MediaType.APPLICATION_JSON)).body(e.getResponseBodyAsString(Charset.defaultCharset()));
 		}
@@ -47,7 +47,7 @@ public class CidadeService {
 
 	public ResponseEntity<Object> buscarPorId(Long id) {
 		try {
-			return rt.getForEntity(ENDPOINT_CIDADES.concat("/").concat(id.toString()), Object.class);
+			return rt.getForEntity(endpointCidades.concat("/").concat(id.toString()), Object.class);
 		} catch (HttpStatusCodeException e) {
 			return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
 					.body(e.getResponseBodyAsString());

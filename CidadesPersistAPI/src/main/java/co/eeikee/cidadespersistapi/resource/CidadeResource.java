@@ -3,6 +3,7 @@ package co.eeikee.cidadespersistapi.resource;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +44,24 @@ public class CidadeResource {
 	@GetMapping("/{id}")
 	public ResponseEntity<Cidade> buscarPorID(@PathVariable("id") Long id){
 		return ResponseEntity.ok(cs.buscarPorId(id));
+	}
+	
+	@GetMapping("/cidade")
+	public ResponseEntity<List<Cidade>> buscarPorNomeDaCidade(@RequestParam String nome){
+		List<Cidade> cidadesComNome = cs.buscarPorNomeCidade(nome);
+		return !cidadesComNome.isEmpty() ? ResponseEntity.ok(cidadesComNome) : ResponseEntity.notFound().build();
+	}
+	
+	@GetMapping("/estado?{pesquisa}")
+	public ResponseEntity<List<Cidade>> buscarPorSiglaDoEstado(@PathVariable("pesquisa") String sigla){
+		List<Cidade> estadoComSigla = cs.buscarPorSiglaEstado(sigla);
+		return !estadoComSigla.isEmpty() ? ResponseEntity.ok(estadoComSigla) : ResponseEntity.notFound().build();
+	}
+	
+	@GetMapping("/estado/nome")
+	public ResponseEntity<List<Cidade>> buscarPorNomeDoEstado(@RequestParam String nome){
+		List<Cidade> estadoComSigla = cs.buscarPorNomeEstado(nome);
+		return !estadoComSigla.isEmpty() ? ResponseEntity.ok(estadoComSigla) : ResponseEntity.notFound().build();
 	}
 	
 	@PutMapping("/{id}")
