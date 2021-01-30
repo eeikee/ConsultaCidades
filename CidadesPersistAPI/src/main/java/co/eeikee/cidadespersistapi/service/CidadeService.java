@@ -55,18 +55,24 @@ public class CidadeService {
 		return cr.findByNomeContaining(nome);
 	}
 
-	public List<Cidade> buscarPorSiglaEstado(String nome) {
+	public List<Cidade> buscarPorSiglaEstado(String sigla) {
+		if(sigla == null) {
+			return new ArrayList<Cidade>();
+		}
 		List<Cidade> cidades = new ArrayList<Cidade>();
 		Arrays.asList(Estado.values()).stream()
-					.filter(estado -> estado.toString().contains(nome))
+					.filter(estado -> estado.toString().contains(sigla.toUpperCase()))
 					.forEach(estado -> cidades.addAll(cr.findByEstado(estado)));
 		return cidades;
 	}
 	
 	public List<Cidade> buscarPorNomeEstado(String nome) {
+		if(nome == null) {
+			return new ArrayList<Cidade>();
+		}
 		List<Cidade> cidades = new ArrayList<Cidade>();
 		Arrays.asList(Estado.values()).stream()
-					.filter(estado -> estado.getNome().contains(nome))
+					.filter(estado -> estado.getNome().toUpperCase().contains(nome.toUpperCase()))
 					.forEach(estado -> cidades.addAll(cr.findByEstado(estado)));
 		return cidades;
 	}

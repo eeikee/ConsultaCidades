@@ -1,5 +1,7 @@
 package co.eeikee.cidadespersistapi.resource;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -52,10 +54,12 @@ public class CidadeResource {
 		return !cidadesComNome.isEmpty() ? ResponseEntity.ok(cidadesComNome) : ResponseEntity.notFound().build();
 	}
 	
-	@GetMapping("/estado?{pesquisa}")
-	public ResponseEntity<List<Cidade>> buscarPorSiglaDoEstado(@PathVariable("pesquisa") String sigla){
-		List<Cidade> estadoComSigla = cs.buscarPorSiglaEstado(sigla);
-		return !estadoComSigla.isEmpty() ? ResponseEntity.ok(estadoComSigla) : ResponseEntity.notFound().build();
+	@GetMapping("/estado")
+	public ResponseEntity<List<Cidade>> buscarPorSiglaDoEstado(@RequestParam(required = false) String sigla , @RequestParam(required = false) String nome){
+		List<Cidade> resultadoBusca = new ArrayList<Cidade>();
+		resultadoBusca.addAll(cs.buscarPorSiglaEstado(sigla)); 
+		resultadoBusca.addAll(cs.buscarPorNomeEstado(nome));
+		return !resultadoBusca.isEmpty() ? ResponseEntity.ok(resultadoBusca) : ResponseEntity.notFound().build();
 	}
 	
 	@GetMapping("/estado/nome")
