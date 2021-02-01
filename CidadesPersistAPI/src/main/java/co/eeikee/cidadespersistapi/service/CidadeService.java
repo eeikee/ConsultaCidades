@@ -40,10 +40,10 @@ public class CidadeService {
 		}
 	}
 
-	public Cidade atualizarPorId(Long id, Cidade cidade) {
+	public void atualizarPorId(Long id, Cidade cidade) {
 		Cidade cidadeASerAtualizada = verificarExistencia(id);
 		BeanUtils.copyProperties(cidade, cidadeASerAtualizada, "id");
-		return cidadeASerAtualizada;
+		cr.save(cidadeASerAtualizada);
 	}
 
 	public void deletarPorId(Long id) {

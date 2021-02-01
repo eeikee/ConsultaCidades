@@ -62,15 +62,10 @@ public class CidadeResource {
 		return !resultadoBusca.isEmpty() ? ResponseEntity.ok(resultadoBusca) : ResponseEntity.notFound().build();
 	}
 	
-	@GetMapping("/estado/nome")
-	public ResponseEntity<List<Cidade>> buscarPorNomeDoEstado(@RequestParam String nome){
-		List<Cidade> estadoComSigla = cs.buscarPorNomeEstado(nome);
-		return !estadoComSigla.isEmpty() ? ResponseEntity.ok(estadoComSigla) : ResponseEntity.notFound().build();
-	}
-	
 	@PutMapping("/{id}")
-	public ResponseEntity<Cidade> atualizarPorID(@PathVariable("id") Long id, @RequestBody @Valid Cidade cidade){
-		return ResponseEntity.ok(cs.atualizarPorId(id, cidade));
+	public ResponseEntity<Void> atualizarPorID(@PathVariable("id") Long id, @RequestBody @Valid Cidade cidade){
+		cs.atualizarPorId(id, cidade);
+		return ResponseEntity.ok().build();
 	}
 	
 	@DeleteMapping("/{id}")

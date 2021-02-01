@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import co.eeikee.cidadescontrollapi.domain.Cidade;
 
@@ -21,15 +22,14 @@ public class CidadeService {
 	
 	@Value("${url.api.persistencia}")
 	private String urlApiPersistencia;
-	
-	private String endpointCidades = urlApiPersistencia + "/cidades";
 
 	@Autowired
 	private RestTemplate rt;
 
 	public ResponseEntity<List<Object>> listar() {
 		try {
-			return rt.exchange(endpointCidades, HttpMethod.GET, null, new ParameterizedTypeReference<List<Object>>() {
+			UriComponentsBuilder endpointListar = UriComponentsBuilder.fromHttpUrl(urlApiPersistencia.concat("/cidades"));
+			return rt.exchange(endpointListar.toUriString(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Object>>() {
 			});
 		} catch (HttpStatusCodeException e) {
 			return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
@@ -39,7 +39,8 @@ public class CidadeService {
 
 	public ResponseEntity<Object> salvar(Cidade cidade) {
 		try {
-			return rt.postForEntity(endpointCidades, cidade, Object.class);
+			UriComponentsBuilder endpointSalvar = UriComponentsBuilder.fromHttpUrl(urlApiPersistencia.concat("/cidades"));
+			return rt.postForEntity(endpointSalvar.toUriString(), cidade, Object.class);
 		} catch (HttpStatusCodeException e) {
 			return ResponseEntity.status(e.getRawStatusCode()).headers(header -> header.setContentType(MediaType.APPLICATION_JSON)).body(e.getResponseBodyAsString(Charset.defaultCharset()));
 		}
@@ -47,7 +48,53 @@ public class CidadeService {
 
 	public ResponseEntity<Object> buscarPorId(Long id) {
 		try {
-			return rt.getForEntity(endpointCidades.concat("/").concat(id.toString()), Object.class);
+			UriComponentsBuilder endpointBuscarId = UriComponentsBuilder.fromHttpUrl(urlApiPersistencia.concat("/cidades/").concat(id.toString()));
+			return rt.getForEntity(endpointBuscarId.toUriString(), Object.class);
+		} catch (HttpStatusCodeException e) {
+			return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
+					.body(e.getResponseBodyAsString());
+		}
+	}
+	
+	public ResponseEntity<Object> buscarPorNomeCidade(String nome) {
+		try {
+			UriComponentsBuilder endpointBuscarNomeCidade = UriComponentsBuilder
+					.fromHttpUrl(urlApiPersistencia.concat("/cidades/cidade"))
+	                .queryParam("nome", nome);
+			return rt.exchange(endpointBuscarNomeCidade.toUriString(),HttpMethod.GET, null, Object.class);
+		} catch (HttpStatusCodeException e) {
+			return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
+					.body(e.getResponseBodyAsString());
+		}
+	}
+	
+	public ResponseEntity<Object> buscarPorNomeSiglaEstado(String nome, String sigla) {
+		try {
+			UriComponentsBuilder endpointBuscarNomeSiglaEstado = UriComponentsBuilder.fromHttpUrl(urlApiPersistencia.concat("/cidades/estado"))
+	                .queryParam("nome", nome).queryParam("sigla", sigla);
+			return rt.exchange(endpointBuscarNomeSiglaEstado.toUriString(),HttpMethod.GET, null, Object.class);
+		} catch (HttpStatusCodeException e) {
+			return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
+					.body(e.getResponseBodyAsString());
+		}
+	}
+	
+	public ResponseEntity<Object> atualizar(Long id, Cidade cidade) {
+		try {
+			UriComponentsBuilder endpointAtualizar = UriComponentsBuilder.fromHttpUrl(urlApiPersistencia.concat("/cidades/").concat(id.toString()));
+			rt.put(endpointAtualizar.toUriString(), cidade);
+			return ResponseEntity.ok().build();
+		} catch (HttpStatusCodeException e) {
+			return ResponseEntity.status(e.getRawStatusCode()).headers(header -> header.setContentType(MediaType.APPLICATION_JSON))
+					.body(e.getResponseBodyAsString());
+		}
+	}
+	
+	public ResponseEntity<Object> deletar(Long id) {
+		try {
+			UriComponentsBuilder endpointDelete = UriComponentsBuilder.fromHttpUrl(urlApiPersistencia.concat("/cidades/").concat(id.toString()));
+			rt.delete(endpointDelete.toUriString());
+			return ResponseEntity.noContent().build();
 		} catch (HttpStatusCodeException e) {
 			return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
 					.body(e.getResponseBodyAsString());
