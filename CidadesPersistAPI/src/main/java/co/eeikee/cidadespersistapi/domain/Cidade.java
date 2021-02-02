@@ -11,18 +11,25 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
+@ApiModel(description = "Cidade")
 @JsonIgnoreProperties("hibernateLazyInitializer")
 public class Cidade implements AutoCloseable {
 
 	@Id
+	@ApiModelProperty(value = "ID da cidade", example = "1")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@ApiModelProperty(value = "Nome da cidade", example = "Sorocaba")
 	@NotEmpty(message = "O campo nome não pode estar vazio.")
 	private String nome;
 
 	
+	@ApiModelProperty(value = "Estado no qual a cidade pertence", example = "SP")
 	@NotNull(message = "O campo estado não pode ser nulo.")
 	@Enumerated(EnumType.STRING)
 	private Estado estado;
