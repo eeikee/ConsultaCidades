@@ -1,5 +1,6 @@
 package co.eeikee.cidadespersistapi.service;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,9 +8,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import co.eeikee.cidadespersistapi.domain.Cidade;
+import co.eeikee.cidadespersistapi.domain.CidadeWrapper;
 import co.eeikee.cidadespersistapi.domain.Estado;
 import co.eeikee.cidadespersistapi.exception.CidadeResourceExceptions.CidadeNaoEncontradaException;
 import co.eeikee.cidadespersistapi.repository.CidadeRepository;
@@ -17,6 +22,11 @@ import co.eeikee.cidadespersistapi.repository.CidadeRepository;
 @Service
 public class CidadeService {
 
+	@Value("${url.api.persistencia}")
+	private String url;
+	
+	private String uri = "";
+	
 	@Autowired
 	private CidadeRepository cr;
 
@@ -75,5 +85,15 @@ public class CidadeService {
 					.filter(estado -> estado.getNome().toUpperCase().contains(nome.toUpperCase()))
 					.forEach(estado -> cidades.addAll(cr.findByEstado(estado)));
 		return cidades;
+	}
+
+	public void salvarPorEstado(Estado estado, CidadeWrapper cidade) {
+		
+		cidade.getCidades().forEach(nome -> {
+			Cidade novaCidade = new Cidade();
+			novaCidade.setEstado(estado);
+			novaCidade.setNome(nome);
+			salvar(novaCidade);
+		});
 	}
 }
